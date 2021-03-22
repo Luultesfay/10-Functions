@@ -235,7 +235,7 @@ book.call(lufthansa, 239, 'Merry cooper'); // worked  correctly we booked flight
 // now we can also add more airlines to lufthansa group lets add swiss airline
 //note: we need to use the same property name  inside the airlines object as orginal airline object in the lufthansa airlines,  becouse the method book is trying to read all the property inside it
 const swiss = {
-  name: 'swiss air lines',
+  airline: 'swiss air lines',
   iataCode: 'LX',
   bookings: [],
 };
@@ -254,3 +254,88 @@ console.log(swiss);
 //the apply method is not useful in modern java script  so there is another easy way for performing the above array lets see
 
 book.call(swiss, ...flightData); //give us the same as the above code  but  here we use  the spread  operator to unpack the element from the array
+console.log(swiss);
+
+//////////THE BIND METHOD
+
+/*The bind() method creates a new function that, when called, has its this keyword set to the provided value, 
+with a given sequence of arguments preceding any provided when the new function is called.
+*/
+
+// just like the call method, bind also allows us to manually set this keywords for any function call.
+//the difference is that bind does not immediately call the function. Instead it returns a new function where this keyword is bound.
+
+//NOTE :const book = lufthansa.book; this changed by const bookLf = book.bind(lufthansa);,const bookEw = book.bind(eurowings);,const bookSW = book.bind(swiss);
+const bookEw = book.bind(eurowings); //we can use the bind method to create a new function with the this keyword also set to Eurowings
+bookEw(67, 'david williams');
+
+const bookSw = book.bind(swiss); //we can use the bind method to create a new function with the this keyword also set to swiss
+bookSw(98, 'Luul Hagos'); //we booked from swiss
+
+const bookLf = book.bind(lufthansa); //we can use the bind method to create a new function with the this keyword also set to lufthansa
+bookLf(18, 'Mike Brown');
+
+///lets take it farther So in the call method, we can pass multiple arguments here besides this keywords, right? eg.book.call(eurowings, 23, 'sarah williams'); eurowings is set to  "this"  and then we add the argument to pass
+//but  we can also pre set arguments to "this" like we did it the eurowings using bind
+
+const bookEw23 = book.bind(eurowings, 44); //euro wing and flight number is pre set(already predifined or set ) to or point to 'this' keyword  so we only need to pass the name when we called like the calling codes below  bookEw23('joe Todd');
+bookEw23('joe Todd'); //joe Todd booked a seat on Eurowings flight EW44
+bookEw23('Sera Gold'); //Sera Gold booked a seat on Eurowings flight EW44
+
+//if we pre set  all the arument like this we only got the specified argument booked
+const bookEw23Luul = book.bind(eurowings, 44, 'luul');
+bookEw23Luul(); //luul booked a seat on Eurowings flight EW44
+
+//// when we use objects togetherwith event listeners.
+
+lufthansa.planes = 300; //we add a property name plane:300  with value 300
+lufthansa.buyPlane = function () {
+  //we add property function name  "buyPlane" to  our lufthansa airlines
+  /*console.log(this); //"this" keyword points to the button element ('.buy') of the event handler
+  
+  //NOTE:we learned that in an event handler function,that this keyword always points to the element on which that handler is attached to.*/
+  console.log(this);
+  this.planes++;
+  console.log(this.planes); //301
+};
+
+//document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane); //here we get out put   <button class="buy"> and NaN   becouse the this key word pointes to the DOM element '.buy'
+
+//but we want the "this" keyword to points to lufthansa object rather than 'buy"element in the dom and then
+//we need out put current number of planes and also newcurrent number of planes with 1 more plane whith every click  of the button in the window "buy new plane"
+
+//lets make this keyword points to the lufthansa     we will use bind becouse bind method returns new function then the "this" key word becomes 'lufthansa'
+document
+  .querySelector('.buy')
+  .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+/*
+Object { airline: "Lufthansa", iataCode: "LH", bookings: (4) […], book: book(flightNum, personName), planes: 300, buyPlane: buyPlane()
+ }
+ //301..302 .303.  with every click to the DOM element the number of planes added by one to the previous number of planes
+*/
+
+///partial applications means preSet or pre defined parameters
+
+//we are going to create a tax calculator with value  of one goods  using arrow function
+
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200)); //220
+console.log(addTax(0.5, 200)); //300
+
+// to make it the rate fixed every where  we can  bind the argument like we did in the airlines
+
+const addTaxFixedRate = addTax.bind(null, 0.23); //we pre defined the rate to 0.23  it becomes  fixed rate
+//the above code is like  addTaxFixedRate=value=>value+(value*23);
+console.log(addTaxFixedRate(100)); //123
+console.log(addTaxFixedRate(23)); //28.29
+
+//function returning function  re write the add tax code
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+const taxRate = addTaxRate(0.23);
+console.log(addTaxFixedRate(100)); //123
+console.log(addTaxFixedRate(23)); //28.29
