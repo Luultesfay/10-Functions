@@ -339,3 +339,93 @@ const addTaxRate = function (rate) {
 const taxRate = addTaxRate(0.23);
 console.log(addTaxFixedRate(100)); //123
 console.log(addTaxFixedRate(23)); //28.29
+
+///////////////////CLOSURE///////////////////////
+
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`booked passenger : ${passengerCount}`);
+  };
+};
+
+const booker = secureBooking(); // booker at this point becomes a function
+//and it remembers the variable  in the above function  even after its execution contetnt is out of the stuck or desappeared
+// booker  holds the returned function
+booker(); //booked passenger : 1
+booker(); //booked passenger : 2
+booker(); //booked passenger : 3
+
+console.log(booker);
+
+//explaniation of the above code   .... becouse we want to explain about  closure
+/*the  securing book function is  returned and gone out of EXCECUTION CONTEXT  for ever  so the variables  (let passengerCount = 0;) 
+inside of securebooking also gone whith it  and there is no way to get them but  clousure come to rescue as , becouse closure is created at the time of
+the function called and have an access to the vanished above function    so in the  above example booker hold the clousre  and can acess the passenger count variable in the global scope of the vanished function
+
+thats whay we can get   /booked passenger : 1,/booked passenger : 2,/booked passenger : 3  when we call booker (),   
+  */
+
+//closure is the closed over  variable envoiroment of excecution  context which a function was created, even after that excecution context is gone  or
+//a clousure gives a function acess to all the variable of its parent function. even after that parent function has returned . the function keeps a reference to its outer scope.which preserve the scope chain through out time   or
+
+// a closure makes sure that  a function dosen't  loose a connection to variables that existed at the function birth place
+
+//more example on closure
+let f;
+const g = function () {
+  const a = 23;
+  f = function () {
+    console.log(a * 3);
+  };
+};
+
+//g(); //here when a  g() is invoked  the  the function g is returned and out from EC(excecution content ) and we can not find the  variable  a =23, becouse its already finshed its work
+//f(); // 69     we get this out put   becouse when  the  function g is out from EC  or desapeared  then this f have a connection or it remembers the desapiread variable  a=23 so this means  its clousure
+
+//lets reassign f  and see what will happen to it
+
+const h = function () {
+  const b = 2;
+
+  f = function () {
+    console.log(b * 20);
+  };
+};
+
+g(); // at this point g is returned and out of EC   and can not access any more but it has a connection with f variable even if it was  not accesible but can be accesed by  f
+f(); //69
+h(); // at this point, here is also  h is returned and out of EC  and not accecesd any more but only by F , becouse f has connection or remember the variable of h and can access it
+f(); // 40     here  f  is completely  reassigned to h and and its value is  completely deferent becouse it assigned to another function
+console.dir(f);
+
+// second example of  clousure
+
+const boardingPassangers = function (numberPassengers, waitingTime) {
+  const passengersGroup = numberPassengers / 3;
+
+  setTimeout(function () {
+    //the  function() is callback function
+    console.log(`we are now boarding ${numberPassengers} passangers`);
+    console.log(
+      `we will board in 3 group ,each with ${passengersGroup} passengers `
+    );
+  }, waitingTime * 1000);
+  console.log(`we are boarding in ${waitingTime} seconds`);
+};
+
+//note that the closure does in fact have priority over the scope chain.  lets create const perGroup variable  the same as variable in the boardPassengers variable to prove that
+// clusure has the priority over scope chain  even the variable passengerGroup below is in global scope
+
+const passengersGroup = 2000; //so  even this variable  is in global scope and it will not have priority over clousure and in this case  the function uses ' const passengersGroup = numberPassengers / 3;' in the function above.
+boardingPassangers(150, 3);
+
+//note that the closure does in fact have priority over the scope chain.
+
+/*out puts 
+- we are boarding in 3 seconds
+-we are now boarding 150 passangers
+-we will board in 3 group ,each with 50 passengers
+*/
