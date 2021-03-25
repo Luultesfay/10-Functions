@@ -430,7 +430,7 @@ boardingPassangers(150, 3);
 -we will board in 3 group ,each with 50 passengers
 */
 
-///challenge #
+///challenge  2#
 /*Your tasks:
 1. Take the IIFE below and at the end of the function, attach an event listener that
 changes the color of the selected h1 element ('header') to blue, each time
@@ -445,6 +445,7 @@ GOOD LUCK 😀*/
 (function () {
   const header = document.querySelector('h1');
   header.style.color = 'red';
+
   document.querySelector('body').addEventListener('click', function () {
     header.style.color = 'blue';
   });
