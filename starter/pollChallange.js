@@ -39,8 +39,9 @@ example, if the option is 3, increase the value at position 3 of the array by
     console.log(this.answers);
   },
 };
-//poll.registerNewAnswer();
+
+poll.registerNewAnswer();
 
 document
   .querySelector('.poll')
-  .addEventListener('click', poll.registerNewAnswer.bind(poll)); //we bind   'poll.registerNewAnswer.bind(poll)'  to make this key word points to the registerNewAnswer function
+  .addEventListener('click', poll.registerNewAnswer.bind(poll)); //we bind   'poll.registerNewAnswer.bind(poll)'  //to make this key word points to the registerNewAnswer function

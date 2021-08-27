@@ -40,7 +40,7 @@ const createBooking = function (
 createBooking(); //{ flightNum: "FLM6567", numPassangers: 1, price: 199 }  all the defaults is outputs  becouse we didnt pass any argument
 createBooking('LH123'); //{ flightNum: "LH123", numPassangers: 1, price: 199 }
 createBooking('LH123', 2); //{ flightNum: "LH123", numPassangers: 2, price: 199 }//here we over ride the defaults
-
+//console.log(bookings);
 //// how passing Arguments works   value vs reference    in function
 
 const flight = 'LH123';
@@ -54,7 +54,7 @@ const checkIn = function (flightNum, passenger) {
   if (passenger.passport === 23456780989) {
     alert('check in');
   } else {
-    alert('wrong passport!');
+    //alert('wrong passport!');
   }
 };
 
@@ -122,7 +122,7 @@ And the callback functions, in here are of course called F N.
 
 //eg the same for this code   using event handler
 const high5 = function () {
-  console.log('👋'); //prints  👋'   when we clike in the window
+  console.log('👋'); //prints  👋'   when we clik in the window
 };
 document.body.addEventListener('click', high5); //here addEventListner is a high order Function like transformer  and  high5 is a callback(also name event listner or event handler) function  like  upperFirstWord and oneWord
 
@@ -224,7 +224,7 @@ the this keyword should point to Lufthansa but if we want to book a Eurowings fl
 
 // ANSWER IS: Well, there are three function methods to do that and they are "call", "apply" and "bind".
 ////////CALL METHOD
-book.call(eurowings, 23, 'sarah williams'); //the first argument is exactly what we want the this keyword to point to. So let's say we want a Eurowings flight  then the other  two arguments follow
+book.call(eurowings, 23, 'sarah williams'); //the first argument is exactly what we want the "this" keyword to point to. So let's say we want a Eurowings flight  then the other  two arguments follow
 //And remember that a function is really just an object and objects have methods and therefore, functions can have methods too and the call method is one of them.
 console.log(eurowings); // it worked and out put as desaired
 
@@ -308,6 +308,7 @@ lufthansa.buyPlane = function () {
 document
   .querySelector('.buy')
   .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+
 /*
 Object { airline: "Lufthansa", iataCode: "LH", bookings: (4) […], book: book(flightNum, personName), planes: 300, buyPlane: buyPlane()
  }
@@ -413,7 +414,7 @@ const boardingPassangers = function (numberPassengers, waitingTime) {
       `we will board in 3 group ,each with ${passengersGroup} passengers `
     );
   }, waitingTime * 1000);
-  console.log(`we are boarding in ${waitingTime} seconds`);
+  console.log(`we are boarding in ${waitingTime} seconds `);
 };
 
 //note that the closure does in fact have priority over the scope chain.  lets create const perGroup variable  the same as variable in the boardPassengers variable to prove that
